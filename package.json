@@ -4,7 +4,7 @@
   "description": "USD <-> ETH price oracle",
   "main": "index.js",
   "scripts": {
-    "test": "truffle test"
+    "build": "./build.sh"
   },
   "repository": {
     "type": "git",
@@ -23,12 +23,14 @@
   "bugs": {
     "url": "https://github.com/Ivshti/usd-oracle/issues"
   },
-  "scripts": {
-    "build": "./build.sh"
-  },
   "homepage": "https://github.com/Ivshti/usd-oracle#readme",
   "dependencies": {
+    "ethereumjs-tx": "^1.3.3",
+    "keythereum": "^1.0.2",
+    "minimist": "^1.2.0",
+    "password-prompt": "^1.0.2",
     "solc": "^0.4.14",
-    "truffle": "^3.4.7"
+    "truffle": "^3.4.7",
+    "web3": "^1.0.0-beta.15"
   }
 }
