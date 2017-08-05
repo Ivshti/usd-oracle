@@ -1,0 +1,30 @@
+{
+  "name": "usd-oracle",
+  "version": "1.0.0",
+  "description": "USD <-> ETH price oracle",
+  "main": "index.js",
+  "scripts": {
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ivshti/usd-oracle.git"
+  },
+  "keywords": [
+    "usd",
+    "eth",
+    "crypto",
+    "cryptocurrency",
+    "oracle",
+    "ethereum"
+  ],
+  "author": "Ivo Georgiev <ivo@strem.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ivshti/usd-oracle/issues"
+  },
+  "homepage": "https://github.com/Ivshti/usd-oracle#readme",
+  "dependencies": {
+    "truffle": "^3.4.7"
+  }
+}
