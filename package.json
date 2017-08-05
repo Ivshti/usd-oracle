@@ -23,8 +23,12 @@
   "bugs": {
     "url": "https://github.com/Ivshti/usd-oracle/issues"
   },
+  "scripts": {
+    "build": "./build.sh"
+  },
   "homepage": "https://github.com/Ivshti/usd-oracle#readme",
   "dependencies": {
+    "solc": "^0.4.14",
     "truffle": "^3.4.7"
   }
 }
