@@ -4,7 +4,8 @@
   "description": "USD <-> ETH price oracle",
   "main": "index.js",
   "scripts": {
-    "build": "./build.sh"
+    "build": "./build.sh",
+    "test": "truffle test"
   },
   "repository": {
     "type": "git",
