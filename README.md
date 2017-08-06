@@ -14,6 +14,10 @@ There are three implementations of an oracle in this repo, so far only `trustedO
 
 ## Usage
 
+`yarn install`
+
+`yarn run build`
+
 `./submitPrice.js <keystore file>` - deploy a new oracle with your keystore file
 
 `./submitPrice.js <keystore file> --oracle <oracle addr>` - submit prices regularly to the oracle
