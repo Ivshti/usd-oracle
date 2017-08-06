@@ -58,16 +58,32 @@ function prepareForSig(keyStore, pwd) {
 
 function deployOracle() 
 {
-	var data = fs.readFileSync('./build-contract/oracleTrusted-bundled_sol_trustedOracle.bin').toString()
-	var payloadData = contract.new.getData({ from: addr, data: data })
+	var bcode = fs.readFileSync('./build-contract/oracleTrusted-bundled_sol_trustedOracle.bin').toString()
+	var payloadData = contract.new.getData({ from: addr, data: '0x'+bcode })
 
-	var gasToDeploy = web3.eth.estimateGas({data: '0x'+payloadData}) + 20000
+	var gasToDeploy = web3.eth.estimateGas({ data: payloadData }) + 20000
 
-	sendTx(payloadData, '0x0000000000000000000000000000000000000000', addr, gasToDeploy, function(err, res) {
+	sendTx(payloadData, undefined, addr, gasToDeploy, function(err, res) {
 		if (err) endWithErr(err)
 		console.log('oracle deployed, tx: ', res)
+		waitForTransactionReceipt(res)
 	})
 
+}
+
+function waitForTransactionReceipt(hash) {
+	console.log('waiting for contract to be mined');
+	var receipt = web3.eth.getTransactionReceipt(hash);
+	// If no receipt, try again in 1s
+	if (receipt == null) {
+		setTimeout(() => {
+			waitForTransactionReceipt(hash);
+		}, 1000);
+	} else {
+		// The transaction was mined, we can retrieve the contract address
+		console.log('contract address: ' + receipt.contractAddress);
+		process.exit(0)
+	}
 }
 
 function startSubmitting() {
@@ -100,11 +116,12 @@ function sendTx(payload, to, from, gas, cb) {
 		nonce: web3.toHex(nonce),
 		gasPrice: web3.toHex(price),
 		gasLimit: web3.toHex(gas),
-		to: to,
 		from: from,
 		value: web3.toHex(0),
 		data: payload,
 	};
+
+	if (to) rawTx.to = to;
 
 	var tx = new Tx(rawTx)
 	tx.sign(privateKey)
