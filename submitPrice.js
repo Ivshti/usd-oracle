@@ -98,7 +98,7 @@ function startSubmitting(oracle) {
 		if (err) endWithErr(err)
 		else {
 			console.log('successfully sent, tx hash: '+hash)
-			setTimeout(startSubmitting, UPDATE_INTERVAL)
+			setTimeout(startSubmitting.bind(null, oracle), UPDATE_INTERVAL)
 		}
 	})
 }
