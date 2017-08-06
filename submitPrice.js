@@ -7,18 +7,25 @@ var Tx = require('ethereumjs-tx')
 var prompt = require('password-prompt')
 var keythereum = require('keythereum')
 var minimist = require('minimist')
+var getEthPriceNow = require('get-eth-price').getEthPriceNow
 
 //var HTTP_PROVIDER = 'http://192.168.0.32:8181'
 var HTTP_PROVIDER = 'https://mainnet.infura.io/W0a3PCAj1UfQZxo5AIrv'
 
 var web3 = new Web3(new Web3.providers.HttpProvider(HTTP_PROVIDER))
 
-var price = 4299515020 // low price
+var price = 4599515020 // low price
 var gas = 64988
+
+
+var UPDATE_INTERVAL = 6 * 60 * 1000 // in ms
+
 
 var args = minimist(process.argv)
 
-var oracleAddr = args.oracle || process.env.ORACLE_ADDR
+var oracleAddr = args.oracle ? web3.toHex(args.oracle) : process.env.ORACLE_ADDR
+
+if (oracleAddr) console.log('Using oracle addr: '+oracleAddr)
 
 
 var oracleAbi = JSON.parse(fs.readFileSync('./build-contract/oracleTrusted-bundled_sol_trustedOracle.abi').toString())
@@ -86,22 +93,35 @@ function waitForTransactionReceipt(hash) {
 	}
 }
 
-function startSubmitting() {
+function startSubmitting(oracle) {
 	submitPrice(oracle, function (err, hash) {
 		if (err) endWithErr(err)
 		else {
 			console.log('successfully sent, tx hash: '+hash)
-			setTimeout(startSubmitting, 5*60*1000)
+			setTimeout(startSubmitting, UPDATE_INTERVAL)
 		}
 	})
 }
 
+var weiPerEth = Math.pow(10, 18)
 function submitPrice(oracle, done)
 {
 	//Math.pow(10,18)/(usdPerEth * 100)
 
-	var payloadData = oracle.submitPrice.getData(37819777626752)
-	sendTx(payloadData, oracle.address, addr, gas, done)
+	getEthPriceNow()
+	.then(function(data) {
+		//console.log(data);
+		var when = Object.keys(data)[0]
+		var prices = data[when]
+		var timestamp = new Date(when).getTime()
+
+		console.log('ETH-USD: '+prices.ETH.USD)
+
+		var weiPerCent = Math.round(weiPerEth / (prices.ETH.USD * 100))
+
+		var payloadData = oracle.submitPrice.getData(timestamp, weiPerCent)
+		sendTx(payloadData, oracle.address, addr, gas, done)
+	}).catch(endWithErr)
 }
 
 
