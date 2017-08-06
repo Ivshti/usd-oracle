@@ -22,3 +22,8 @@ There are three implementations of an oracle in this repo, so far only `trustedO
 ## Data source
 
 Currently we use the npm module `get-eth-price`
+
+
+## Example in mainnet
+
+[0x4ef405d78be762c0e5628b1b93ef6c7ead2d9385](https://etherscan.io/address/0x4ef405d78be762c0e5628b1b93ef6c7ead2d9385#readContract)
