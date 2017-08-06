@@ -2,7 +2,7 @@ pragma solidity ^0.4.13;
 
 import "../zeppelin-solidity/contracts/ownership/Ownable.sol";
 
-contract trustedOralce is Ownable {
+contract trustedOracle is Ownable {
 	mapping (uint => uint) pricePoints;
 	uint public lastTimestamp;
 
