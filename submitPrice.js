@@ -21,9 +21,9 @@ var gas = 64988
 var UPDATE_INTERVAL = 6 * 60 * 1000 // in ms
 
 
-var args = minimist(process.argv)
+var args = minimist(process.argv, { string: ['oracle'] })
 
-var oracleAddr = args.oracle ? web3.toHex(args.oracle) : process.env.ORACLE_ADDR
+var oracleAddr = args.oracle || process.env.ORACLE_ADDR
 
 if (oracleAddr) console.log('Using oracle addr: '+oracleAddr)
 
